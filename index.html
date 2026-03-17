@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ayush Narayanaswamy — Management Engineering at UWaterloo. Product, data, and systems builder.">
+<title>Ayush Narayanaswamy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4GY14R2CPV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4GY14R2CPV');
+</script>
+  
+
+<style>
+/* ── Music player ── */
+.about-media-grid{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.8rem;}
+.music-player{border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:1rem;background:#0d0d0d;display:flex;flex-direction:column;gap:.75rem;}
+.music-top{display:flex;align-items:center;gap:.9rem;}
+.vinyl{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 50%,#1a1a1a 0%,#111 30%,#222 45%,#111 60%,#0a0a0a 100%);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.vinyl-center{width:10px;height:10px;border-radius:50%;background:#c9b99a;box-shadow:0 0 0 2px #111,0 0 0 3px rgba(201,185,154,.3);}
+.vinyl.spinning{animation:vinyl-spin 2.5s linear infinite;}
+@keyframes vinyl-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.track-details{flex:1;min-width:0;}
+.track-name{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:#ede9e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.track-artist{font-size:.5rem;color:#b5afa6;letter-spacing:.08em;margin-top:2px;}
+.player-controls{display:flex;align-items:center;justify-content:center;gap:1rem;}
+.player-btn{background:none;border:none;color:#b5afa6;font-size:.85rem;transition:color .2s;padding:.2rem .4rem;line-height:1;}
+.player-btn:hover{color:#c9b99a;}
+.play-btn{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;font-size:.65rem;}
+.play-btn:hover{border-color:#c9b99a;}
+.track-progress{width:100%;height:2px;background:rgba(255,255,255,0.07);border-radius:1px;overflow:hidden;}
+.track-progress-fill{height:100%;background:#c9b99a;width:0%;transition:width .5s linear;border-radius:1px;}
+/* ── GitHub chart ── */
+.github-chart-wrap{border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:.85rem;background:#0d0d0d;}
+.github-chart-label{font-size:.45rem;letter-spacing:.18em;text-transform:uppercase;color:#4a4742;margin-bottom:.65rem;}
+.github-chart-img{width:100%;display:block;border-radius:1px;filter:invert(1) hue-rotate(180deg) brightness(.7) contrast(1.2);opacity:.8;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#060606;--surface:#0d0d0d;
+  --border:rgba(255,255,255,0.07);--border-h:rgba(201,185,154,0.28);
+  --text:#ede9e1;--sub:#b5afa6;--dim:#4a4742;
+  --accent:#c9b99a;--accent-bg:rgba(201,185,154,0.09);
+  --panel-w:58%;
+}
+*{cursor:none;}
+
+/* ═══════════════════════════════════════════
+   CURSOR — Comet Trail
+   Gold dot leaving a fading particle trail
+═══════════════════════════════════════════ */
+#cur-dot{
+  position:fixed;pointer-events:none;z-index:9999;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  transform:translate(-50%,-50%);
+  transition:transform .1s,width .18s,height .18s,background .18s;
+}
+.cur-trail{
+  position:fixed;pointer-events:none;z-index:9998;
+  border-radius:50%;background:var(--accent);
+  transform:translate(-50%,-50%);
+}
+body.cursor-hover #cur-dot{
+  width:10px;height:10px;background:var(--accent);
+  box-shadow:0 0 10px rgba(201,185,154,.5);
+}
+body.cursor-click #cur-dot{transform:translate(-50%,-50%) scale(.5);}
+@media(hover:none){
+  #cur-dot,.cur-trail{display:none;}
+  *{cursor:auto;}
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Geist Mono',monospace;overflow:hidden;}
+
+/* three.js bg */
+#bg-three{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.9;transition:opacity .5s;}
+#bg-three.dimmed{opacity:.2;}
+
+/* nav */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:8;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.2rem;height:52px;
+  background:rgba(6,6,6,0.65);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  opacity:0;animation:fadein .6s ease 1.9s forwards;
+}
+.nav-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;font-weight:300;letter-spacing:.02em;
+  color:var(--sub);text-decoration:none;transition:color .2s;
+}
+.nav-name:hover{color:var(--text);}
+.nav-links{display:flex;gap:0;list-style:none;}
+.nav-links li a{
+  font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--sub);text-decoration:none;
+  padding:.45rem 1.1rem;position:relative;transition:color .2s;display:block;
+}
+.nav-links li a::after{
+  content:'';position:absolute;bottom:0;left:1.1rem;right:1.1rem;
+  height:1px;background:var(--accent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s cubic-bezier(.22,1,.36,1);
+}
+.nav-links li a:hover,.nav-links li a.active{color:var(--text);}
+.nav-links li a:hover::after,.nav-links li a.active::after{transform:scaleX(1);}
+.nav-links li a.active{color:var(--accent);}
+.nav-resume{
+  font-size:.49rem;letter-spacing:.18em;text-transform:uppercase;
+  padding:.35rem .85rem;border:1px solid var(--dim);
+  color:var(--sub);background:none;text-decoration:none;
+  border-radius:1px;transition:border-color .2s,color .2s;
+}
+.nav-resume:hover{border-color:var(--accent);color:var(--accent);}
+
+/* intro sweep */
+.intro-line{
+  position:fixed;top:50%;left:0;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);
+  z-index:1;transform:scaleX(0);transform-origin:left;
+  animation:line-draw 1.4s cubic-bezier(.76,0,.24,1) .05s forwards;
+}
+@keyframes line-draw{
+  0%{transform:scaleX(0);opacity:0}15%{opacity:.7}70%{opacity:.5}100%{transform:scaleX(1);opacity:0}
+}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+
+/* hero */
+.hero{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;z-index:2;
+  opacity:0;animation:hero-rise 1s cubic-bezier(.16,1,.3,1) 1.1s forwards;
+}
+@keyframes hero-rise{
+  from{opacity:0;transform:translate(-50%,-50%) translateY(16px)}
+  to{opacity:1;transform:translate(-50%,-50%) translateY(0)}
+}
+.hero-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.6rem,5.5vw,5rem);
+  font-weight:300;letter-spacing:.01em;line-height:1.05;color:var(--text);
+}
+.hero-name em{font-style:italic;color:var(--accent);}
+.hero-sub{
+  margin-top:.8rem;font-size:.55rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--sub);line-height:2.1;
+}
+.hero-divider{width:1.2rem;height:1px;background:var(--dim);margin:1.2rem auto;}
+.hero-links{display:flex;gap:1.6rem;justify-content:center;}
+.hero-links a{
+  font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);text-decoration:none;position:relative;transition:color .2s;
+}
+.hero-links a::after{
+  content:'';position:absolute;bottom:-2px;left:0;
+  width:0;height:1px;background:var(--accent);transition:width .3s ease;
+}
+.hero-links a:hover{color:var(--accent);}
+.hero-links a:hover::after{width:100%;}
+
+/* status */
+.status-pill{
+  position:fixed;bottom:1.6rem;right:1.8rem;
+  display:flex;align-items:center;gap:7px;
+  font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--sub);z-index:5;
+  opacity:0;animation:fadein .6s ease 2.4s forwards;
+}
+.pulse-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#5a9e72;flex-shrink:0;
+  animation:pulse-glow 2.2s ease-in-out infinite;
+}
+@keyframes pulse-glow{
+  0%,100%{box-shadow:0 0 0 0 rgba(90,158,114,.5)}
+  50%{box-shadow:0 0 0 5px rgba(90,158,114,0)}
+}
+
+/* kbd hint */
+.kbd-hint{
+  position:fixed;bottom:1.6rem;left:1.8rem;
+  font-size:.48rem;letter-spacing:.12em;
+  color:var(--dim);z-index:5;
+  opacity:0;animation:fadein .6s ease 2.8s forwards;
+}
+.kbd-hint span{
+  display:inline-block;border:1px solid var(--dim);
+  padding:.15rem .38rem;border-radius:2px;margin-right:2px;font-size:.44rem;
+}
+
+/* toast */
+.toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(8px);
+  font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--surface);border:1px solid var(--border-h);
+  color:var(--accent);padding:.45rem 1.1rem;border-radius:2px;
+  z-index:99;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* backdrop */
+.backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9;
+  opacity:0;pointer-events:none;transition:opacity .45s;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.backdrop.on{opacity:1;pointer-events:all;}
+
+/* panel */
+.panel{
+  position:fixed;top:0;right:0;width:var(--panel-w);height:100%;
+  background:rgba(6,6,6,.98);border-left:1px solid var(--border);
+  z-index:10;transform:translateX(102%);
+  transition:transform .55s cubic-bezier(.22,1,.36,1);
+  overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;
+}
+.panel.open{transform:translateX(0);}
+.panel::-webkit-scrollbar{width:2px;}
+.panel::-webkit-scrollbar-thumb{background:var(--dim);}
+.panel::-webkit-scrollbar-track{background:transparent;}
+
+/* scroll progress */
+.panel-progress{
+  position:sticky;top:52px;left:0;right:0;
+  height:1px;background:var(--border);z-index:2;flex-shrink:0;
+}
+.panel-progress-bar{
+  height:100%;background:var(--accent);width:0%;transition:width .1s linear;
+}
+
+.panel-header{
+  position:sticky;top:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 2.8rem;height:52px;
+  background:rgba(6,6,6,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);z-index:1;flex-shrink:0;
+}
+.panel-label{font-size:.5rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);}
+.close-btn{
+  background:none;border:none;font-family:'Geist Mono',monospace;
+  font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--sub);padding:.3rem 0;transition:color .2s;
+}
+.close-btn:hover{color:var(--text);}
+.panel-inner{padding:2.5rem 2.8rem 4rem;}
+
+/* stagger */
+.panel.open .stagger{animation:stagger-in .5s cubic-bezier(.16,1,.3,1) forwards;}
+.panel.open .stagger:nth-child(1){animation-delay:.04s;opacity:0;}
+.panel.open .stagger:nth-child(2){animation-delay:.09s;opacity:0;}
+.panel.open .stagger:nth-child(3){animation-delay:.14s;opacity:0;}
+.panel.open .stagger:nth-child(4){animation-delay:.19s;opacity:0;}
+.panel.open .stagger:nth-child(5){animation-delay:.24s;opacity:0;}
+.panel.open .stagger:nth-child(6){animation-delay:.29s;opacity:0;}
+.panel.open .stagger:nth-child(7){animation-delay:.34s;opacity:0;}
+.panel.open .stagger:nth-child(8){animation-delay:.39s;opacity:0;}
+.panel.open .stagger:nth-child(9){animation-delay:.44s;opacity:0;}
+@keyframes stagger-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,3.2vw,2.8rem);
+  font-weight:300;line-height:1.1;color:var(--text);margin-bottom:.35rem;
+}
+.panel-title em{font-style:italic;color:var(--accent);}
+.panel-rule{width:1.8rem;height:1px;background:var(--border);margin:1.4rem 0 2rem;}
+
+/* about */
+.photo-slot{
+  width:100%;aspect-ratio:3/4;background:var(--surface);
+  border:1px solid var(--border);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.5rem;letter-spacing:.14em;color:var(--dim);
+  text-transform:uppercase;margin-bottom:2rem;overflow:hidden;
+}
+.photo-slot img{width:100%;height:100%;object-fit:cover;object-position:50% 42%;transition:transform .6s ease;}
+.photo-slot:hover img{transform:scale(1.04);}
+.bio{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.12rem;font-weight:300;line-height:1.9;
+  color:var(--text);margin-bottom:1.5rem;
+}
+.contact-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.75rem 0;border-bottom:1px solid var(--border);
+  position:relative;
+}
+.contact-label{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--sub);}
+.contact-val{font-size:.58rem;color:var(--text);text-decoration:none;transition:color .2s;}
+a.contact-val:hover{color:var(--accent);}
+.copy-btn{
+  position:absolute;right:0;
+  background:none;border:none;
+  font-family:'Geist Mono',monospace;
+  font-size:.44rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);padding:.2rem .4rem;border-radius:1px;
+  transition:color .2s,background .2s;
+}
+.copy-btn:hover{color:var(--accent);background:var(--accent-bg);}
+
+/* projects */
+.proj-list{display:flex;flex-direction:column;gap:1.6rem;}
+.proj-card{border:1px solid var(--border);border-radius:2px;overflow:hidden;transition:border-color .3s;}
+.proj-card:hover{border-color:var(--border-h);}
+.proj-thumb{width:100%;aspect-ratio:16/9;background:var(--surface);overflow:hidden;position:relative;}
+.proj-thumb img.thumb-img{width:100%;height:100%;object-fit:cover;opacity:.78;transition:opacity .4s,transform .6s;}
+.proj-card:hover .proj-thumb img.thumb-img{opacity:1;transform:scale(1.03);}
+.proj-thumb-svg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#080808;}
+.proj-thumb-svg svg{width:75%;height:75%;}
+.proj-body{padding:1.2rem 1.5rem 1.5rem;}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.2rem;}
+.proj-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--text);}
+.proj-year{font-size:.48rem;letter-spacing:.12em;color:var(--sub);}
+.proj-badge{
+  display:inline-block;font-size:.47rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:.2rem .6rem;margin-bottom:.6rem;
+  background:var(--accent-bg);border:1px solid rgba(201,185,154,.3);
+  color:var(--accent);border-radius:1px;
+}
+.proj-desc{font-size:.63rem;line-height:1.8;color:var(--sub);margin-bottom:1rem;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem;}
+.proj-tag{
+  font-size:.47rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.22rem .55rem;border:1px solid var(--border);color:var(--sub);border-radius:1px;
+}
+.proj-links{display:flex;gap:.8rem;}
+.proj-link{
+  font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--sub);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color .2s;
+}
+.proj-link:hover{color:var(--accent);}
+.proj-link svg{width:10px;height:10px;fill:currentColor;flex-shrink:0;}
+
+/* experience */
+.exp-item{padding:1.6rem 0;border-bottom:1px solid var(--border);}
+.exp-item:last-child{border-bottom:none;}
+.exp-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.25rem;}
+.exp-role{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--text);line-height:1.2;}
+.exp-date{font-size:.48rem;letter-spacing:.1em;color:var(--sub);white-space:nowrap;margin-left:1rem;padding-top:3px;}
+.exp-org{font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem;}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+.exp-bullets li{font-size:.63rem;line-height:1.75;color:var(--sub);padding-left:1.1rem;position:relative;}
+.exp-bullets li::before{content:'—';position:absolute;left:0;color:var(--dim);}
+
+.edu-block{margin-top:2.5rem;}
+.edu-label{font-size:.48rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem;}
+.edu-item{padding:1.2rem 0;border-bottom:1px solid var(--border);}
+.edu-item:last-child{border-bottom:none;}
+.edu-degree{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--text);margin-bottom:.2rem;}
+.edu-school{font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem;}
+.edu-detail{font-size:.6rem;line-height:1.7;color:var(--sub);}
+
+/* stack */
+.stack-section{margin-bottom:1.8rem;}
+.stack-heading{font-size:.48rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem;}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;}
+.chip{
+  font-size:.58rem;letter-spacing:.06em;padding:.38rem .75rem;
+  border:1px solid var(--border);color:var(--text);border-radius:1px;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.chip:hover{border-color:var(--border-h);color:var(--accent);background:var(--accent-bg);}
+
+/* ── about-me style ── */
+.about-contact{
+  display:flex;align-items:center;flex-wrap:wrap;gap:.5rem .1rem;
+  margin-bottom:2rem;padding-bottom:1.5rem;
+  border-bottom:1px solid var(--border);
+}
+.about-contact-sep{color:var(--dim);font-size:.5rem;padding:0 .4rem;}
+.about-contact-link{
+  font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--sub);text-decoration:none;transition:color .2s;
+  background:none;border:none;padding:0;font-family:'Geist Mono',monospace;
+}
+.about-contact-link:hover{color:var(--accent);}
+.about-section{margin-bottom:1.8rem;}
+.about-section-label{
+  font-size:.48rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.9rem;
+}
+.about-list{list-style:none;display:flex;flex-direction:column;gap:.75rem;}
+.about-item{display:flex;align-items:center;gap:.7rem;line-height:1.6;}
+.about-arrow{
+  color:var(--accent);font-size:.5rem;flex-shrink:0;
+}
+.about-text{font-size:.65rem;color:var(--sub);line-height:1.65;}
+.about-org-link{
+  display:inline-flex;align-items:center;gap:.35rem;
+  text-decoration:none;color:var(--text);
+  vertical-align:middle;
+  transition:color .2s;
+}
+.about-org-link:hover{color:var(--accent);}
+.about-org-link img{display:block;}
+.about-org-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.48rem;font-weight:500;letter-spacing:.04em;
+  padding:.22rem .45rem;border-radius:3px;flex-shrink:0;
+  font-family:'Geist Mono',monospace;
+}
+.about-org-sub{font-size:.58rem;color:var(--dim);}
+.about-inline-link{color:var(--accent);text-decoration:none;}
+.about-inline-link:hover{text-decoration:underline;}
+
+/* ── education panel ── */
+.edu-card{
+  border:1px solid var(--border);border-radius:2px;
+  padding:1.4rem 1.5rem;margin-bottom:2rem;
+  transition:border-color .3s;
+}
+.edu-card:hover{border-color:var(--border-h);}
+.edu-card-header{
+  display:flex;align-items:flex-start;gap:.85rem;margin-bottom:1.2rem;
+}
+.edu-courses-label{
+  font-size:.47rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:.7rem;
+}
+.act-item{
+  border:1px solid var(--border);border-radius:2px;
+  padding:1.2rem 1.4rem;margin-bottom:1rem;
+  transition:border-color .3s;
+}
+.act-item:hover{border-color:var(--border-h);}
+.act-header{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;}
+.act-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;font-weight:400;color:var(--text);flex:1;
+}
+.act-role{
+  font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);
+}
+.act-desc{font-size:.61rem;line-height:1.75;color:var(--sub);}
+
+/* mobile */
+@media(max-width:768px){
+  :root{--panel-w:100%;}
+  .panel{border-left:none;border-top:1px solid var(--border);}
+  .panel-inner{padding:2rem 1.5rem 3rem;}
+  .panel-header{padding:0 1.5rem;}
+  nav{padding:0 1.2rem;}
+  .nav-links li a{padding:.45rem .7rem;font-size:.48rem;}
+  .nav-resume{display:none;}
+  .hero-name{font-size:clamp(2rem,9vw,3rem);}
+  .hero-links{gap:1rem;}
+  .kbd-hint{display:none;}
+}
+@media(max-width:400px){
+  .nav-name{display:none;}
+  .nav-links li a{padding:.45rem .5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor: Comet Trail -->
+<div id="cur-dot"></div>
+<div id="bg-three"></div>
+<div class="intro-line"></div>
+<div class="toast" id="toast"></div>
+
+<!-- nav -->
+<nav>
+  <a class="nav-name" href="#" onclick="open_panel('about');return false;">AN</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="open_panel('about');return false;" data-p="about">About</a></li>
+    <li><a href="#" onclick="open_panel('projects');return false;" data-p="projects">Projects</a></li>
+    <li><a href="#" onclick="open_panel('experience');return false;" data-p="experience">Experience</a></li>
+    <li><a href="#" onclick="open_panel('education');return false;" data-p="education">Education</a></li>
+    <li><a href="#" onclick="open_panel('stack');return false;" data-p="stack">Stack</a></li>
+  </ul>
+  <a class="nav-resume" href="Ayush_Narayanaswamy_Resume.pdf" download>↓ Resume</a>
+</nav>
+
+<!-- hero -->
+<main class="hero">
+  <h1 class="hero-name">Ayush <em>Narayanaswamy</em></h1>
+  <p class="hero-sub">Management Engineering · UWaterloo<br>Product · Data · Systems</p>
+  <div class="hero-divider"></div>
+  <div class="hero-links">
+    <a href="/cdn-cgi/l/email-protection#adcc9bc3ccdfccd4ccedd8daccd9c8dfc1c2c283cecc">Email</a>
+    <a href="https://linkedin.com/in/ayush-narayanaswamy" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/AyushNaaa" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</main>
+
+<div class="status-pill"><span class="pulse-dot"></span><span>Open to opportunities</span></div>
+<div class="kbd-hint"><span>1</span>About <span>2</span>Projects <span>3</span>Experience <span>4</span>Education <span>5</span>Stack</div>
+
+<div class="backdrop" id="backdrop" onclick="close_all()"></div>
+
+<!-- ══ ABOUT ══ -->
+<div class="panel" id="panel-about">
+  <div class="panel-header">
+    <span class="panel-label">00 — About</span>
+    <button class="close-btn" onclick="close_all()">× close</button>
+  </div>
+  <div class="panel-progress"><div class="panel-progress-bar" id="prog-about"></div></div>
+  <div class="panel-inner">
+    <h2 class="panel-title stagger">about<br><em>me.</em></h2>
+    <div class="panel-rule stagger"></div>
+    <div class="photo-slot stagger"><img src="images/photo.jpg" alt="Ayush Narayanaswamy"></div>
+    <div class="about-media-grid stagger">
+      <div class="music-player" id="music-player">
+        <div class="music-top">
+          <div class="vinyl" id="vinyl"><div class="vinyl-center"></div></div>
+          <div class="track-details">
+            <div class="track-name" id="track-name">Press play</div>
+            <div class="track-artist" id="track-artist">— —</div>
+          </div>
+        </div>
+        <div class="track-progress"><div class="track-progress-fill" id="track-fill"></div></div>
+        <div class="player-controls">
+          <button class="player-btn" onclick="music_prev()">&#8592;</button>
+          <button class="player-btn play-btn" id="play-btn" onclick="music_toggle()">&#9654;</button>
+          <button class="player-btn" onclick="music_next()">&#8594;</button>
+        </div>
+      </div>
+      <div class="github-chart-wrap">
+        <div class="github-chart-label">GitHub contributions</div>
+        <img class="github-chart-img" src="https://ghchart.rshah.org/AyushNaaa" alt="GitHub chart" loading="lazy">
+      </div>
+    </div>
+    <div class="about-contact stagger">
+      <a class="about-contact-link" href="/cdn-cgi/l/email-protection#4322752d2231223a22033634223726312f2c2c6d2022">Email</a>
+      <span class="about-contact-sep">·</span>
+      <a class="about-contact-link" href="https://linkedin.com/in/ayush-narayanaswamy" target="_blank">LinkedIn</a>
+      <span class="about-contact-sep">·</span>
+      <a class="about-contact-link" href="https://github.com/AyushNaaa" target="_blank">GitHub</a>
+      <span class="about-contact-sep">·</span>
+      <button class="about-contact-link about-copy-btn" onclick="copy_text('a6naraya@uwaterloo.ca')">Copy Email</button>
+    </div>
+    <div class="about-section stagger">
+      <div class="about-section-label">Prev.</div>
+      <ul class="about-list">
+        <li class="about-item">
+          <span class="about-arrow">▶</span>
+          <span class="about-text">Product &amp; Business Development Intern @
+            <a class="about-org-link" href="https://localstudent.com" target="_blank" rel="noopener">
+              <img src="images/logo-ls.png" alt="LocalStudent" style="height:20px;width:auto;border-radius:2px;">
+              LocalStudent
+            </a>
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div class="about-section stagger">
+      <div class="about-section-label">Curr.</div>
+      <ul class="about-list">
+        <li class="about-item">
+          <span class="about-arrow">▶</span>
+          <span class="about-text">Management Engineering @
+            <a class="about-org-link" href="https://uwaterloo.ca" target="_blank" rel="noopener">
+              <img src="images/logo-uw.png" alt="UWaterloo" style="height:20px;width:auto;border-radius:2px;">
+              UWaterloo
+            </a>
+          </span>
+        </li>
+        <li class="about-item">
+          <span class="about-arrow">▶</span>
+          <span class="about-text">Product &amp; BizDev @
+            <a class="about-org-link" href="https://uwformularacing.ca" target="_blank" rel="noopener">
+              <img src="images/logo-uwfe.png" alt="UWFE" style="height:20px;width:auto;border-radius:2px;">
+              UW Formula Electric
+            </a>
+          </span>
+        </li>
+        <li class="about-item">
+          <span class="about-arrow">▶</span>
+          <span class="about-text">Founder @
+            <a class="about-org-link" href="#" onclick="return false;">
+              <img src="images/logo-mech.png" alt="MECH" style="height:20px;width:auto;border-radius:2px;">
+              MECH
+            </a>
+            <span class="about-org-sub"> — Medical Envoys for Community Health</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div class="about-section stagger">
+      <div class="about-section-label">Other.</div>
+      <ul class="about-list">
+        <li class="about-item"><span class="about-arrow">▶</span><span class="about-text">HackCanada 2026 finalist — built Lucid, a biometric-adaptive LLM study platform</span></li>
+        <li class="about-item"><span class="about-arrow">▶</span><span class="about-text">StupidHacks 2025 finalist — built ExTerrapy, a multi-persona AI companion</span></li>
+        <li class="about-item"><span class="about-arrow">▶</span><span class="about-text">Based in Vancouver, BC · studying in Waterloo, ON</span></li>
+        <li class="about-item"><span class="about-arrow">▶</span><span class="about-text">Check out my <a class="about-inline-link" href="#" onclick="open_panel('projects');return false;"><em>Projects →</em></a></span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROJECTS ══ -->
+<div class="panel" id="panel-projects">
+  <div class="panel-header">
+    <span class="panel-label">01 — Projects</span>
+    <button class="close-btn" onclick="close_all()">× close</button>
+  </div>
+  <div class="panel-progress"><div class="panel-progress-bar" id="prog-projects"></div></div>
+  <div class="panel-inner">
+    <h2 class="panel-title stagger">Things I've<br><em>built</em></h2>
+    <div class="panel-rule stagger"></div>
+    <div class="proj-list">
+
+      <!-- Lucid -->
+      <div class="proj-card stagger">
+        <div class="proj-thumb">
+          <div class="proj-thumb-svg" style="background:#000;">
+            <img src="images/logo.png" alt="Lucid" style="width:52%;height:auto;object-fit:contain;">
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-badge">HackCanada 2026 Finalist</div>
+          <div class="proj-top"><span class="proj-name">Lucid</span><span class="proj-year">2026</span></div>
+          <p class="proj-desc">Biometric-adaptive study platform capturing heart rate, HRV, breathing rate, and blink signals from smartphone camera via Presage SmartSpectra SDK. Streams physiological data over WebSockets to a locally-hosted Qwen 2.5 LLM (Ollama) which classifies cognitive states — flow, fatigue, frustration, disengagement — and generates adaptive study recommendations in real-time. Improved measured study efficiency by 75%.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Node.js</span><span class="proj-tag">React</span><span class="proj-tag">WebSockets</span>
+            <span class="proj-tag">SQLite</span><span class="proj-tag">Computer Vision</span><span class="proj-tag">Ollama / Qwen2.5</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/AyushNaaa/Lucid" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.295 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ExTerrapy -->
+      <div class="proj-card stagger">
+        <div class="proj-thumb">
+          <div class="proj-thumb-svg">
+            <svg width="160" height="100" viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Three persona rings -->
+              <circle cx="80" cy="44" r="28" stroke="#2a2725" stroke-width=".8"/>
+              <!-- Left arc: therapist -->
+              <path d="M57 30 A26 26 0 0 0 57 58" stroke="#3a3632" stroke-width="1" fill="none" stroke-linecap="round"/>
+              <!-- Right arc: friend -->
+              <path d="M103 30 A26 26 0 0 1 103 58" stroke="#3a3632" stroke-width="1" fill="none" stroke-linecap="round"/>
+              <!-- Top node -->
+              <circle cx="80" cy="18" r="4" stroke="#c9b99a" stroke-width="1" fill="none"/>
+              <circle cx="80" cy="18" r="1.5" fill="#c9b99a"/>
+              <!-- Bottom-left node -->
+              <circle cx="56" cy="66" r="4" stroke="#c9b99a" stroke-width="1" fill="none" opacity=".7"/>
+              <circle cx="56" cy="66" r="1.5" fill="#c9b99a" opacity=".7"/>
+              <!-- Bottom-right node -->
+              <circle cx="104" cy="66" r="4" stroke="#c9b99a" stroke-width="1" fill="none" opacity=".7"/>
+              <circle cx="104" cy="66" r="1.5" fill="#c9b99a" opacity=".7"/>
+              <!-- Connecting lines -->
+              <line x1="80" y1="22" x2="60" y2="63" stroke="#2e2b28" stroke-width=".6" stroke-dasharray="2 3"/>
+              <line x1="80" y1="22" x2="100" y2="63" stroke="#2e2b28" stroke-width=".6" stroke-dasharray="2 3"/>
+              <line x1="60" y1="66" x2="100" y2="66" stroke="#2e2b28" stroke-width=".6" stroke-dasharray="2 3"/>
+              <!-- EKG wave through center -->
+              <polyline points="46,44 55,44 59,34 63,54 67,44 80,44 84,44 88,34 92,54 96,44 105,44 114,44" stroke="#c9b99a" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>
+              <!-- Labels -->
+              <text x="80" y="15" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="5" fill="#4a4742" letter-spacing="1">THERAPIST</text>
+              <text x="50" y="78" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="5" fill="#4a4742" letter-spacing="1">FRIEND</text>
+              <text x="110" y="78" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="5" fill="#4a4742" letter-spacing="1">EX</text>
+              <text x="80" y="92" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="6" fill="#4a4742" letter-spacing="3">EXTERRAPY</text>
+            </svg>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-badge">StupidHacks 2025 Finalist</div>
+          <div class="proj-top"><span class="proj-name">ExTerrapy</span><span class="proj-year">2025</span></div>
+          <p class="proj-desc">Multi-persona conversational AI platform engineered on the Google Gemini API, delivering adaptive emotional support through three distinct relational behavioral profiles: therapist, companion, and ex-partner. Implements dynamic prompt engineering with contextual session memory to maintain persona coherence across extended conversations. Features real-time streaming response architecture, emotional state inference from user input patterns, and a Next.js App Router frontend with custom conversation state management hooks.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Next.js</span><span class="proj-tag">TypeScript</span>
+            <span class="proj-tag">Google Gemini API</span><span class="proj-tag">Prompt Engineering</span><span class="proj-tag">Streaming</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/AyushNaaa/ex-terrapy1-stupidhacks-main" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.295 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lens -->
+      <div class="proj-card stagger">
+        <div class="proj-thumb">
+          <div class="proj-thumb-svg">
+            <svg width="160" height="100" viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="68" cy="49" r="32" stroke="#2a2725" stroke-width=".8"/>
+              <circle cx="68" cy="49" r="21" stroke="#232120" stroke-width=".6"/>
+              <line x1="68" y1="17" x2="68" y2="81" stroke="#232120" stroke-width=".5"/>
+              <line x1="36" y1="49" x2="100" y2="49" stroke="#232120" stroke-width=".5"/>
+              <line x1="45.3" y1="26.3" x2="90.7" y2="71.7" stroke="#232120" stroke-width=".5"/>
+              <line x1="90.7" y1="26.3" x2="45.3" y2="71.7" stroke="#232120" stroke-width=".5"/>
+              <circle cx="68" cy="49" r="9" stroke="#c9b99a" stroke-width="1.2" fill="none"/>
+              <circle cx="68" cy="49" r="2.5" fill="#c9b99a"/>
+              <!-- Focus brackets -->
+              <path d="M55 36 L55 30 L61 30" stroke="#c9b99a" stroke-width=".8" fill="none" stroke-linecap="round" opacity=".5"/>
+              <path d="M81 36 L81 30 L75 30" stroke="#c9b99a" stroke-width=".8" fill="none" stroke-linecap="round" opacity=".5"/>
+              <path d="M55 62 L55 68 L61 68" stroke="#c9b99a" stroke-width=".8" fill="none" stroke-linecap="round" opacity=".5"/>
+              <path d="M81 62 L81 68 L75 68" stroke="#c9b99a" stroke-width=".8" fill="none" stroke-linecap="round" opacity=".5"/>
+              <!-- Scan lines right -->
+              <line x1="103" y1="38" x2="148" y2="38" stroke="#c9b99a" stroke-width=".7" stroke-linecap="round" opacity=".6"/>
+              <line x1="103" y1="43" x2="152" y2="43" stroke="#c9b99a" stroke-width=".7" stroke-linecap="round" opacity=".35"/>
+              <line x1="103" y1="48" x2="152" y2="48" stroke="#c9b99a" stroke-width=".7" stroke-linecap="round" opacity=".25"/>
+              <line x1="103" y1="53" x2="152" y2="53" stroke="#c9b99a" stroke-width=".7" stroke-linecap="round" opacity=".2"/>
+              <line x1="103" y1="58" x2="148" y2="58" stroke="#c9b99a" stroke-width=".7" stroke-linecap="round" opacity=".15"/>
+              <!-- Score indicator -->
+              <rect x="108" y="62" width="36" height="8" rx="1" fill="none" stroke="#2e2b28" stroke-width=".5"/>
+              <rect x="108" y="62" width="22" height="8" rx="1" fill="#c9b99a" opacity=".15"/>
+              <line x1="130" y1="62" x2="130" y2="70" stroke="#c9b99a" stroke-width=".8" opacity=".4"/>
+              <text x="68" y="91" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="6" fill="#4a4742" letter-spacing="4">LENS</text>
+            </svg>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-top"><span class="proj-name">Lens</span><span class="proj-year">2026</span></div>
+          <p class="proj-desc">Chrome extension performing real-time credibility analysis on long-form media sources during active browsing. Implements live DOM parsing and metadata extraction combined with bias-detection heuristics and citation-density scoring. Lightweight NLP models evaluate credibility signals across 1,000+ analyzed pages, surfacing inline reliability indicators and source bias flags — with natural language explanations via a locally-hosted Ollama inference layer.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">TypeScript</span><span class="proj-tag">Chrome Extensions API</span>
+            <span class="proj-tag">NLP</span><span class="proj-tag">Ollama</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/AyushNaaa/Lens" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.295 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ExcelFI -->
+      <div class="proj-card stagger">
+        <div class="proj-thumb">
+          <div class="proj-thumb-svg">
+            <svg width="160" height="100" viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="24" y="14" width="112" height="66" stroke="#2a2725" stroke-width=".8"/>
+              <rect x="24" y="14" width="112" height="15" fill="#0f0f0f"/>
+              <line x1="52" y1="14" x2="52" y2="80" stroke="#232120" stroke-width=".5"/>
+              <line x1="80" y1="14" x2="80" y2="80" stroke="#232120" stroke-width=".5"/>
+              <line x1="108" y1="14" x2="108" y2="80" stroke="#232120" stroke-width=".5"/>
+              <line x1="24" y1="29" x2="136" y2="29" stroke="#232120" stroke-width=".5"/>
+              <line x1="24" y1="44" x2="136" y2="44" stroke="#232120" stroke-width=".5"/>
+              <line x1="24" y1="59" x2="136" y2="59" stroke="#232120" stroke-width=".5"/>
+              <!-- Header labels -->
+              <text x="38" y="24" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="5" fill="#4a4742">DATE</text>
+              <text x="66" y="24" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="5" fill="#4a4742">AMOUNT</text>
+              <text x="94" y="24" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="5" fill="#4a4742">CAT</text>
+              <text x="122" y="24" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="5" fill="#c9b99a" opacity=".5">Δ</text>
+              <!-- Growth line -->
+              <polyline points="30,72 46,62 62,55 78,43 94,31 110,21 128,16" stroke="#c9b99a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="30" cy="72" r="2" fill="#c9b99a" opacity=".4"/>
+              <circle cx="62" cy="55" r="2" fill="#c9b99a" opacity=".6"/>
+              <circle cx="94" cy="31" r="2.2" fill="#c9b99a" opacity=".8"/>
+              <circle cx="128" cy="16" r="2.5" fill="#c9b99a"/>
+              <!-- Mini bar charts in cells -->
+              <rect x="28" y="62" width="6" height="10" fill="#c9b99a" opacity=".12"/>
+              <rect x="35" y="58" width="6" height="14" fill="#c9b99a" opacity=".12"/>
+              <rect x="42" y="55" width="6" height="17" fill="#c9b99a" opacity=".12"/>
+              <text x="80" y="92" text-anchor="middle" font-family="'Geist Mono',monospace" font-size="6" fill="#4a4742" letter-spacing="2">EXCELFI</text>
+            </svg>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-top"><span class="proj-name">ExcelFI</span><span class="proj-year">2025</span></div>
+          <p class="proj-desc">Comprehensive personal finance management system engineered entirely in Excel VBA. Supports structured data management for 5,000+ financial records with automated categorization pipelines and validated data-entry UserForms enforcing strict schema integrity. Features 10+ automated analytical dashboards — spending trend analysis, net cash flow visualization, investment projections with trained exponential growth models, and budgeting scenarios.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Excel VBA</span><span class="proj-tag">Financial Modeling</span><span class="proj-tag">Data Pipelines</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/AyushNaaa/ExcelFI---VBA_Finance_Tracker" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.295 2.747-1.026 2.747-1.026.546 1.378.202 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ EXPERIENCE ══ -->
+<div class="panel" id="panel-experience">
+  <div class="panel-header">
+    <span class="panel-label">02 — Experience</span>
+    <button class="close-btn" onclick="close_all()">× close</button>
+  </div>
+  <div class="panel-progress"><div class="panel-progress-bar" id="prog-experience"></div></div>
+  <div class="panel-inner">
+    <h2 class="panel-title stagger">Where I've<br><em>worked</em></h2>
+    <div class="panel-rule stagger"></div>
+    <div class="exp-item stagger">
+      <div class="exp-top"><div class="exp-role">Product & Business<br>Development Intern</div><span class="exp-date">2026</span></div>
+      <div class="exp-org">LocalStudent (DMZ Backed) · Toronto, ON</div>
+      <ul class="exp-bullets">
+        <li>Built Python + SQL analytics pipelines serving 40,000+ concurrent users, processing 1,000+ marketplace listings and transactions daily</li>
+        <li>Worked directly with CEO and co-founders to design 10+ internal PowerBI dashboards tracking listing conversion, engagement, and retention cohorts</li>
+        <li>Ran data-driven product experiments on listing visibility and discovery, improving marketplace engagement and transaction liquidity by 15%</li>
+        <li>Analyzed user feedback to implement and ship 3 newly requested features targeting core user pain points</li>
+      </ul>
+    </div>
+    <div class="exp-item stagger">
+      <div class="exp-top"><div class="exp-role">Product & Business<br>Development Specialist</div><span class="exp-date">Sep 2025 – Present</span></div>
+      <div class="exp-org">UW Formula Electric (UWFE) · Waterloo, ON</div>
+      <ul class="exp-bullets">
+        <li>Secured and managed partnerships with 10+ industry sponsors; coordinated outreach campaigns and sponsorship deliverables supporting Formula SAE development</li>
+        <li>Produced marketing materials and campaigns increasing team visibility; supported recruitment of 100+ prospective members</li>
+        <li>Previously developed embedded firmware modules in C/C++ for vehicle telemetry; applied op-amp and circuit analysis for signal integrity</li>
+      </ul>
+    </div>
+    <div class="exp-item stagger">
+      <div class="exp-top"><div class="exp-role">Academic Representative</div><span class="exp-date">2025 – Present</span></div>
+      <div class="exp-org">University of Waterloo · Management Engineering</div>
+      <ul class="exp-bullets">
+        <li>Elected to represent 100+ Management Engineering students in Engineering Society academic meetings and faculty coordination</li>
+      </ul>
+    </div>
+    <div class="exp-item stagger">
+      <div class="exp-top"><div class="exp-role">Founder & Outreach Manager</div><span class="exp-date">Jun 2023 – Present</span></div>
+      <div class="exp-org">Medical Envoys for Community Health (MECH) · Vancouver, BC</div>
+      <ul class="exp-bullets">
+        <li>Founded nonprofit registered under the Government of British Columbia; raised $3,000+ for hospital and community healthcare</li>
+        <li>Directed outreach campaigns engaging 200+ participants; coordinated volunteers, partnerships, and fundraising</li>
+        <li>Designed operational workflows improving volunteer coordination across multi-event campaigns</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ EDUCATION ══ -->
+<div class="panel" id="panel-education">
+  <div class="panel-header">
+    <span class="panel-label">04 — Education</span>
+    <button class="close-btn" onclick="close_all()">× close</button>
+  </div>
+  <div class="panel-progress"><div class="panel-progress-bar" id="prog-education"></div></div>
+  <div class="panel-inner">
+    <h2 class="panel-title stagger">Where I'm<br><em>studying</em></h2>
+    <div class="panel-rule stagger"></div>
+
+    <div class="edu-card stagger">
+      <div class="edu-card-header">
+        <span class="about-org-badge" style="background:#2d1a00;color:#f5a623;font-size:.6rem;padding:.3rem .55rem;">UW</span>
+        <div>
+          <div class="edu-degree">BASc, Management Engineering</div>
+          <div class="edu-school">University of Waterloo · Jul 2025 – Jul 2030</div>
+        </div>
+      </div>
+      <div class="edu-courses-label">Relevant Coursework</div>
+      <div class="chips" style="margin-bottom:1.4rem;">
+        <span class="chip">MSE 240 — Data Structures &amp; Algorithms</span>
+        <span class="chip">MSE 131 — Project Management &amp; Scrum</span>
+        <span class="chip">MSE 100 — Excel VBA &amp; Product Management</span>
+        <span class="chip">MSE 121 — Python &amp; Git</span>
+      </div>
+    </div>
+
+    <div class="about-section-label stagger" style="margin-bottom:1rem;">Activities</div>
+
+    <div class="act-item stagger">
+      <div class="act-header">
+        <span class="about-org-badge" style="background:#0d0d1f;color:#6e8cff;font-size:.6rem;padding:.3rem .5rem;">AI</span>
+        <div class="act-title">WatAI</div>
+        <div class="act-role">Member</div>
+      </div>
+      <p class="act-desc">University of Waterloo's largest AI club — working on projects at the intersection of machine learning, applied AI research, and engineering. Engaged in workshops, research reading groups, and collaborative ML builds.</p>
+    </div>
+
+    <div class="act-item stagger">
+      <div class="act-header">
+        <span class="about-org-badge" style="background:#001a1a;color:#00cccc;font-size:.6rem;padding:.3rem .5rem;">DS</span>
+        <div class="act-title">UW Data Science Club</div>
+        <div class="act-role">Member</div>
+      </div>
+      <p class="act-desc">Collaborative learning community focused on data analysis, statistical modelling, and applied data pipelines. Participating in case competitions, workshops, and project teams applying data science to real-world problems.</p>
+    </div>
+
+    <div class="act-item stagger">
+      <div class="act-header">
+        <span class="about-org-badge" style="background:#2d1a00;color:#f5a623;font-size:.6rem;padding:.3rem .5rem;">UW</span>
+        <div class="act-title">Academic Representative</div>
+        <div class="act-role">Management Engineering · Elected</div>
+      </div>
+      <p class="act-desc">Elected by 100+ Management Engineering peers to serve as the department's Engineering Society representative — attending faculty meetings, surfacing student concerns, and coordinating academic feedback between students and administration.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ STACK ══ -->
+<div class="panel" id="panel-stack">
+  <div class="panel-header">
+    <span class="panel-label">03 — Stack</span>
+    <button class="close-btn" onclick="close_all()">× close</button>
+  </div>
+  <div class="panel-progress"><div class="panel-progress-bar" id="prog-stack"></div></div>
+  <div class="panel-inner">
+    <h2 class="panel-title stagger">Tools I<br><em>reach for</em></h2>
+    <div class="panel-rule stagger"></div>
+    <div class="stack-section stagger">
+      <div class="stack-heading">Languages</div>
+      <div class="chips">
+        <span class="chip">Python</span><span class="chip">TypeScript</span><span class="chip">JavaScript</span>
+        <span class="chip">SQL</span><span class="chip">C++</span><span class="chip">C</span>
+        <span class="chip">VBA</span><span class="chip">Kotlin</span>
+      </div>
+    </div>
+    <div class="stack-section stagger">
+      <div class="stack-heading">Frameworks & Platforms</div>
+      <div class="chips">
+        <span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Node.js</span>
+        <span class="chip">Docker</span><span class="chip">Supabase</span><span class="chip">NumPy</span>
+        <span class="chip">pandas</span><span class="chip">Matplotlib</span><span class="chip">PowerBI</span>
+        <span class="chip">Tableau</span><span class="chip">Flutter</span>
+      </div>
+    </div>
+    <div class="stack-section stagger">
+      <div class="stack-heading">ML & AI</div>
+      <div class="chips">
+        <span class="chip">NLP</span><span class="chip">RAG Pipelines</span><span class="chip">Ollama</span>
+        <span class="chip">Model Training</span><span class="chip">AI API Integration</span>
+      </div>
+    </div>
+    <div class="stack-section stagger">
+      <div class="stack-heading">Tools</div>
+      <div class="chips">
+        <span class="chip">Git / GitHub</span><span class="chip">Jira</span><span class="chip">Confluence</span>
+        <span class="chip">Vercel</span><span class="chip">Figma</span><span class="chip">Jupyter</span>
+        <span class="chip">REST APIs</span><span class="chip">VS Code</span>
+      </div>
+    </div>
+    <div class="stack-section stagger">
+      <div class="stack-heading">Certifications</div>
+      <div class="chips">
+        <span class="chip">Technical Product Management</span>
+        <span class="chip">PowerBI Dashboards</span>
+        <span class="chip">ETL with Python & SQL</span>
+        <span class="chip">Docker Foundations Professional</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Three.js CDN -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ── Cursor: Comet Trail (Option A) ── */
+(function(){
+  const dot=document.getElementById('cur-dot');
+  if(!dot)return;
+  let mx=0,my=0;
+  const TRAIL_COUNT=8;
+  const trail=[];
+  // Create trail elements
+  for(let i=0;i<TRAIL_COUNT;i++){
+    const el=document.createElement('div');
+    el.className='cur-trail';
+    const frac=1-(i/TRAIL_COUNT);
+    const sz=Math.max(1.5,5*frac);
+    el.style.cssText=`width:${sz}px;height:${sz}px;opacity:${(frac*.22).toFixed(3)};`;
+    document.body.appendChild(el);
+    trail.push({el,x:0,y:0});
+  }
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  let px=0,py=0;
+  function frame(){
+    // Snap dot immediately
+    dot.style.left=mx+'px';dot.style.top=my+'px';
+    // Each trail segment lerps toward previous
+    let lx=mx,ly=my;
+    for(let i=0;i<trail.length;i++){
+      const t=trail[i];
+      const speed=0.28-i*.025;
+      t.x+=(lx-t.x)*speed;
+      t.y+=(ly-t.y)*speed;
+      t.el.style.left=t.x+'px';t.el.style.top=t.y+'px';
+      lx=t.x;ly=t.y;
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+  document.querySelectorAll('a,button,.chip,.proj-card,.nav-links li a').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+  document.addEventListener('mousedown',()=>document.body.classList.add('cursor-click'));
+  document.addEventListener('mouseup',()=>document.body.classList.remove('cursor-click'));
+})();
+
+/* ── Three.js dotted wave surface ── */
+(function(){
+  if(typeof THREE==='undefined')return;
+  const container=document.getElementById('bg-three');
+  const SEPARATION=150,AMOUNTX=38,AMOUNTY=55;
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,1,10000);
+  camera.position.set(0,355,1220);
+  camera.lookAt(0,0,0);
+  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  renderer.setClearColor(0x000000,0);
+  container.appendChild(renderer.domElement);
+  renderer.domElement.style.cssText='position:absolute;inset:0;width:100%;height:100%;';
+
+  const positions=[];
+  for(let ix=0;ix<AMOUNTX;ix++)for(let iy=0;iy<AMOUNTY;iy++){
+    positions.push(ix*SEPARATION-(AMOUNTX*SEPARATION)/2,0,iy*SEPARATION-(AMOUNTY*SEPARATION)/2);
+  }
+  const geometry=new THREE.BufferGeometry();
+  const posAttr=new THREE.Float32BufferAttribute(positions,3);
+  geometry.setAttribute('position',posAttr);
+  const material=new THREE.PointsMaterial({size:6,color:0xe8d9c0,transparent:true,opacity:.42,sizeAttenuation:true});
+  const points=new THREE.Points(geometry,material);
+  scene.add(points);
+
+  let count=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    const pa=geometry.attributes.position.array;
+    let i=0;
+    for(let ix=0;ix<AMOUNTX;ix++)for(let iy=0;iy<AMOUNTY;iy++){
+      pa[i*3+1]=Math.sin((ix+count)*.3)*50+Math.sin((iy+count)*.5)*50;i++;
+    }
+    geometry.attributes.position.needsUpdate=true;
+    renderer.render(scene,camera);
+    count+=.07;
+  }
+  animate();
+  window.addEventListener('resize',()=>{
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  });
+})();
+
+/* ── Panel system ── */
+const panels_order=['about','projects','experience','education','stack'];
+function open_panel(name){
+  document.querySelectorAll('.panel').forEach(p=>{
+    p.classList.remove('open');
+    p.querySelectorAll('.stagger').forEach(el=>{el.style.animation='none';void el.offsetHeight;el.style.animation='';});
+  });
+  document.querySelectorAll('.nav-links li a').forEach(a=>a.classList.toggle('active',a.dataset.p===name));
+  const panel=document.getElementById('panel-'+name);
+  if(panel){
+    panel.classList.add('open');
+    document.getElementById('backdrop').classList.add('on');
+    document.getElementById('bg-three').classList.add('dimmed');
+    panel.scrollTop=0;
+    const bar=document.getElementById('prog-'+name);
+    if(bar){
+      const update=()=>{
+        const {scrollTop,scrollHeight,clientHeight}=panel;
+        const pct=scrollHeight<=clientHeight?0:(scrollTop/(scrollHeight-clientHeight))*100;
+        bar.style.width=pct+'%';
+      };
+      panel.addEventListener('scroll',update);
+      update();
+    }
+  }
+}
+function close_all(){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('open'));
+  document.getElementById('backdrop').classList.remove('on');
+  document.getElementById('bg-three').classList.remove('dimmed');
+  document.querySelectorAll('.nav-links li a').forEach(a=>a.classList.remove('active'));
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){close_all();return;}
+  const map={'1':'about','2':'projects','3':'experience','4':'education','5':'stack',
+             'a':'about','p':'projects','e':'experience','d':'education','s':'stack'};
+  if(map[e.key.toLowerCase()]&&!e.ctrlKey&&!e.metaKey){
+    const active=document.querySelector('.panel.open');
+    if(!active||active.id!=='panel-'+map[e.key.toLowerCase()])open_panel(map[e.key.toLowerCase()]);
+  }
+});
+
+/* ── Music Player ── */
+(function(){
+  const TRACKS=[
+    {name:'Nights',           artist:'Frank Ocean'},
+    {name:'Starboy',          artist:'The Weeknd'},
+    {name:'Redbone',          artist:'Childish Gambino'},
+    {name:'After Hours',      artist:'The Weeknd'},
+    {name:'Thinkin Bout You', artist:'Frank Ocean'},
+    {name:'R.I.P.',           artist:'Young Jeezy'},
+  ];
+  let idx=0,playing=false,progress=0,interval=null;
+  function render(){
+    const t=TRACKS[idx];
+    const nameEl=document.getElementById('track-name');
+    const artistEl=document.getElementById('track-artist');
+    const btnEl=document.getElementById('play-btn');
+    const vinylEl=document.getElementById('vinyl');
+    const fillEl=document.getElementById('track-fill');
+    if(!nameEl)return;
+    nameEl.textContent=t.name;
+    artistEl.textContent=t.artist;
+    btnEl.innerHTML=playing?'&#9646;&#9646;':'&#9654;';
+    vinylEl.className='vinyl'+(playing?' spinning':'');
+    fillEl.style.width=progress+'%';
+  }
+  function tick(){
+    progress+=0.5;
+    if(progress>=100){progress=0;idx=(idx+1)%TRACKS.length;}
+    render();
+  }
+  window.music_toggle=function(){
+    playing=!playing;
+    if(playing){interval=setInterval(tick,300);}else{clearInterval(interval);}
+    render();
+  };
+  window.music_next=function(){
+    idx=(idx+1)%TRACKS.length;progress=0;
+    if(playing){clearInterval(interval);interval=setInterval(tick,300);}
+    render();
+  };
+  window.music_prev=function(){
+    idx=(idx-1+TRACKS.length)%TRACKS.length;progress=0;
+    if(playing){clearInterval(interval);interval=setInterval(tick,300);}
+    render();
+  };
+  render();
+})();
+/* ── Copy to clipboard ── */
+function copy_text(text){
+  if(!navigator.clipboard){return;}
+  navigator.clipboard.writeText(text).then(()=>{
+    const t=document.getElementById('toast');
+    if(!t)return;
+    t.textContent='Copied!';
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),1800);
+  });
+}
+</script>
+</body>
+</html>
