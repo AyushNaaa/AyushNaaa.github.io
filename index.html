@@ -17,7 +17,31 @@
 
   gtag('config', 'G-4GY14R2CPV');
 </script>
+  
+
 <style>
+/* ── Music player ── */
+.about-media-grid{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.8rem;}
+.music-player{border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:1rem;background:#0d0d0d;display:flex;flex-direction:column;gap:.75rem;}
+.music-top{display:flex;align-items:center;gap:.9rem;}
+.vinyl{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 50%,#1a1a1a 0%,#111 30%,#222 45%,#111 60%,#0a0a0a 100%);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.vinyl-center{width:10px;height:10px;border-radius:50%;background:#c9b99a;box-shadow:0 0 0 2px #111,0 0 0 3px rgba(201,185,154,.3);}
+.vinyl.spinning{animation:vinyl-spin 2.5s linear infinite;}
+@keyframes vinyl-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.track-details{flex:1;min-width:0;}
+.track-name{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:#ede9e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.track-artist{font-size:.5rem;color:#b5afa6;letter-spacing:.08em;margin-top:2px;}
+.player-controls{display:flex;align-items:center;justify-content:center;gap:1rem;}
+.player-btn{background:none;border:none;color:#b5afa6;font-size:.85rem;transition:color .2s;padding:.2rem .4rem;line-height:1;}
+.player-btn:hover{color:#c9b99a;}
+.play-btn{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;font-size:.65rem;}
+.play-btn:hover{border-color:#c9b99a;}
+.track-progress{width:100%;height:2px;background:rgba(255,255,255,0.07);border-radius:1px;overflow:hidden;}
+.track-progress-fill{height:100%;background:#c9b99a;width:0%;transition:width .5s linear;border-radius:1px;}
+/* ── GitHub chart ── */
+.github-chart-wrap{border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:.85rem;background:#0d0d0d;}
+.github-chart-label{font-size:.45rem;letter-spacing:.18em;text-transform:uppercase;color:#4a4742;margin-bottom:.65rem;}
+.github-chart-img{width:100%;display:block;border-radius:1px;filter:invert(1) hue-rotate(180deg) brightness(.7) contrast(1.2);opacity:.8;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --bg:#060606;--surface:#0d0d0d;
@@ -486,6 +510,27 @@ a.contact-val:hover{color:var(--accent);}
     <h2 class="panel-title stagger">about<br><em>me.</em></h2>
     <div class="panel-rule stagger"></div>
     <div class="photo-slot stagger"><img src="photo.jpg" alt="Ayush Narayanaswamy"></div>
+    <div class="about-media-grid stagger">
+      <div class="music-player" id="music-player">
+        <div class="music-top">
+          <div class="vinyl" id="vinyl"><div class="vinyl-center"></div></div>
+          <div class="track-details">
+            <div class="track-name" id="track-name">Press play</div>
+            <div class="track-artist" id="track-artist">— —</div>
+          </div>
+        </div>
+        <div class="track-progress"><div class="track-progress-fill" id="track-fill"></div></div>
+        <div class="player-controls">
+          <button class="player-btn" onclick="music_prev()">&#8592;</button>
+          <button class="player-btn play-btn" id="play-btn" onclick="music_toggle()">&#9654;</button>
+          <button class="player-btn" onclick="music_next()">&#8594;</button>
+        </div>
+      </div>
+      <div class="github-chart-wrap">
+        <div class="github-chart-label">GitHub contributions</div>
+        <img class="github-chart-img" src="https://ghchart.rshah.org/AyushNaaa" alt="GitHub chart" loading="lazy">
+      </div>
+    </div>
     <div class="about-contact stagger">
       <a class="about-contact-link" href="mailto:a6naraya@uwaterloo.ca">Email</a>
       <span class="about-contact-sep">·</span>
@@ -1038,7 +1083,53 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-
+/* ── Music Player ── */
+(function(){
+  const TRACKS=[
+    {name:'Nights',           artist:'Frank Ocean'},
+    {name:'Starboy',          artist:'The Weeknd'},
+    {name:'Redbone',          artist:'Childish Gambino'},
+    {name:'After Hours',      artist:'The Weeknd'},
+    {name:'Thinkin Bout You', artist:'Frank Ocean'},
+    {name:'R.I.P.',           artist:'Young Jeezy'},
+  ];
+  let idx=0,playing=false,progress=0,interval=null;
+  function render(){
+    const t=TRACKS[idx];
+    const nameEl=document.getElementById('track-name');
+    const artistEl=document.getElementById('track-artist');
+    const btnEl=document.getElementById('play-btn');
+    const vinylEl=document.getElementById('vinyl');
+    const fillEl=document.getElementById('track-fill');
+    if(!nameEl)return;
+    nameEl.textContent=t.name;
+    artistEl.textContent=t.artist;
+    btnEl.innerHTML=playing?'&#9646;&#9646;':'&#9654;';
+    vinylEl.className='vinyl'+(playing?' spinning':'');
+    fillEl.style.width=progress+'%';
+  }
+  function tick(){
+    progress+=0.5;
+    if(progress>=100){progress=0;idx=(idx+1)%TRACKS.length;}
+    render();
+  }
+  window.music_toggle=function(){
+    playing=!playing;
+    if(playing){interval=setInterval(tick,300);}else{clearInterval(interval);}
+    render();
+  };
+  window.music_next=function(){
+    idx=(idx+1)%TRACKS.length;progress=0;
+    if(playing){clearInterval(interval);interval=setInterval(tick,300);}
+    render();
+  };
+  window.music_prev=function(){
+    idx=(idx-1+TRACKS.length)%TRACKS.length;progress=0;
+    if(playing){clearInterval(interval);interval=setInterval(tick,300);}
+    render();
+  };
+  render();
+})();
 /* ── Copy to clipboard ── */
 function copy_text(text){
   if(!navigator.clipboard){return;}
