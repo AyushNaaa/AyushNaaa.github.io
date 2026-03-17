@@ -807,6 +807,7 @@ a.contact-val:hover{color:var(--accent);}
     <h2 class="panel-title stagger">Where I've<br><em>worked</em></h2>
     <div class="panel-rule stagger"></div>
     <div class="exp-item stagger">
+      <img src="images/logo-ls.png" alt="LocalStudent" style="height:20px;width:auto;border-radius:2px;margin-bottom:.5rem;">
       <div class="exp-top"><div class="exp-role">Product & Business<br>Development Intern</div><span class="exp-date">2026</span></div>
       <div class="exp-org">LocalStudent (DMZ Backed) · Toronto, ON</div>
       <ul class="exp-bullets">
@@ -817,6 +818,7 @@ a.contact-val:hover{color:var(--accent);}
       </ul>
     </div>
     <div class="exp-item stagger">
+      <div class="exp-top"><div class="exp-role">Product & Business<br>Development Specialist</div>
       <div class="exp-top"><div class="exp-role">Product & Business<br>Development Specialist</div><span class="exp-date">Sep 2025 – Present</span></div>
       <div class="exp-org">UW Formula Electric (UWFE) · Waterloo, ON</div>
       <ul class="exp-bullets">
@@ -826,6 +828,7 @@ a.contact-val:hover{color:var(--accent);}
       </ul>
     </div>
     <div class="exp-item stagger">
+      <img src="images/logo-mech.png" alt="MECH" style="height:20px;width:auto;border-radius:2px;margin-bottom:.5rem;">
       <div class="exp-top"><div class="exp-role">Founder & Outreach Manager</div><span class="exp-date">Jun 2023 – Present</span></div>
       <div class="exp-org">Medical Envoys for Community Health (MECH) · Vancouver, BC</div>
       <ul class="exp-bullets">
@@ -1090,12 +1093,15 @@ document.addEventListener('keydown',e=>{
 /* ── Music Player ── */
 (function(){
   const TRACKS=[
-    {name:'Nights',           artist:'Frank Ocean'},
-    {name:'Starboy',          artist:'The Weeknd'},
-    {name:'Redbone',          artist:'Childish Gambino'},
-    {name:'After Hours',      artist:'The Weeknd'},
-    {name:'Thinkin Bout You', artist:'Frank Ocean'},
-    {name:'R.I.P.',           artist:'Young Jeezy'},
+    {name:'Sorrows',           artist:'Bryson Tiller'},
+    {name:'Junes Interlude',          artist:'Nobu Woods'},
+    {name:'Feel No Ways',          artist:'Drake'},
+    {name:'Cry for Me',      artist:'The Weeknd'},
+    {name:'Crew', artist:'Brent Faiyaz'},
+    {name:'KAPITOL DENIM',           artist:'LUCKI'},
+    {name:'PHASES',          artist:'Chase Atlantic'},
+    {name:'Spiteful',          artist:'PARTYNEXTDOOR'},
+    {name:'Lights Out',          artist:'Chris Brown'}
   ];
   let idx=0,playing=false,progress=0,interval=null;
   function render(){
