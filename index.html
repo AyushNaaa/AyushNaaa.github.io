@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Ayush Narayanaswamy — Management Engineering at UWaterloo. Product, data, and systems builder.">
 <title>Ayush Narayanaswamy</title>
+<link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -60,7 +61,7 @@
   --text:#1a1814;--sub:#5a5550;--dim:#a09890;
   --accent:#c9b99a;--accent-bg:rgba(201,185,154,0.18);
 }
-[data-theme="light"] #bg-three{opacity:.18;}
+[data-theme="light"] #bg-three{opacity:.6;}
 [data-theme="light"] .panel{background:rgba(245,242,238,.98);}
 [data-theme="light"] .panel-header{background:rgba(245,242,238,.95);}
 [data-theme="light"] .backdrop{background:rgba(200,195,190,.5);}
@@ -1058,9 +1059,13 @@ a.contact-val:hover{color:var(--accent);}
   const geometry=new THREE.BufferGeometry();
   const posAttr=new THREE.Float32BufferAttribute(positions,3);
   geometry.setAttribute('position',posAttr);
-  const material=new THREE.PointsMaterial({size:6,color:0xe8d9c0,transparent:true,opacity:.42,sizeAttenuation:true});
+  const material=new THREE.PointsMaterial({size:7,color:0xc9b99a,transparent:true,opacity:.65,sizeAttenuation:true});
   const points=new THREE.Points(geometry,material);
   scene.add(points);
+  window.update_three_theme=function(isLight){
+    material.color.setHex(isLight?0x8a7a62:0xc9b99a);
+    material.opacity=isLight?0.9:0.65;
+  };
 
   let count=0;
   function animate(){
@@ -1200,12 +1205,14 @@ function copy_text(text){
       knob.style.background='var(--dim)';
       moon.style.display='block';
       sun.style.display='none';
+      window.update_three_theme&&window.update_three_theme(false);
     } else {
       document.documentElement.setAttribute('data-theme','light');
       knob.style.transform='translateX(26px)';
       knob.style.background='#a09890';
       moon.style.display='none';
       sun.style.display='block';
+      window.update_three_theme&&window.update_three_theme(true);
     }
   });
 })();
