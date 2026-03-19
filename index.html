@@ -54,6 +54,32 @@
   --accent:#c9b99a;--accent-bg:rgba(201,185,154,0.09);
   --panel-w:58%;
 }
+[data-theme="light"]{
+  --bg:#f5f2ee;--surface:#ede9e1;
+  --border:rgba(0,0,0,0.08);--border-h:rgba(201,185,154,0.6);
+  --text:#1a1814;--sub:#5a5550;--dim:#a09890;
+  --accent:#c9b99a;--accent-bg:rgba(201,185,154,0.18);
+}
+[data-theme="light"] #bg-three{opacity:.18;}
+[data-theme="light"] .panel{background:rgba(245,242,238,.98);}
+[data-theme="light"] .panel-header{background:rgba(245,242,238,.95);}
+[data-theme="light"] .backdrop{background:rgba(200,195,190,.5);}
+[data-theme="light"] .music-player,
+[data-theme="light"] .github-chart-wrap,
+[data-theme="light"] .about-spline-wrap{background:#ede9e1;}
+[data-theme="light"] nav{background:rgba(245,242,238,0.75);}
+[data-theme="light"] .github-chart-img{filter:none;opacity:.7;}
+[data-theme="light"] .track-name{color:#1a1814;}
+[data-theme="light"] .track-artist{color:#5a5550;}
+[data-theme="light"] .player-btn{color:#5a5550;}
+[data-theme="light"] .player-btn:hover{color:#c9b99a;}
+[data-theme="light"] .track-progress{background:rgba(0,0,0,0.1);}
+[data-theme="light"] .proj-card{background:#f0ece6;}
+[data-theme="light"] .proj-thumb-svg{background:#e8e3dc;}
+[data-theme="light"] .vinyl{background:radial-gradient(circle at 50%,#d8d2c8 0%,#c8c0b4 30%,#d4ccc0 45%,#c8c0b4 60%,#bdb5a8 100%);border-color:rgba(0,0,0,0.1);}
+[data-theme="light"] .play-btn{border-color:rgba(0,0,0,0.15);}
+[data-theme="light"] .vinyl-center{box-shadow:0 0 0 2px #ede9e1,0 0 0 3px rgba(201,185,154,.3);}
+[data-theme="light"] .music-player,[data-theme="light"] .github-chart-wrap,[data-theme="light"] .about-spline-wrap{border-color:rgba(0,0,0,0.08);}
 *{cursor:none;}
 
 /* ═══════════════════════════════════════════
@@ -485,7 +511,15 @@ a.contact-val:hover{color:var(--accent);}
     <li><a href="#" onclick="open_panel('education');return false;" data-p="education">Education</a></li>
     <li><a href="#" onclick="open_panel('stack');return false;" data-p="stack">Stack</a></li>
   </ul>
+  <div style="display:flex;align-items:center;gap:.7rem;">
+  <button id="theme-toggle" aria-label="Toggle theme" style="background:none;border:1px solid var(--dim);border-radius:20px;width:52px;height:26px;padding:3px;display:flex;align-items:center;cursor:none;transition:border-color .2s;position:relative;">
+    <span id="theme-knob" style="width:18px;height:18px;border-radius:50%;background:var(--dim);display:flex;align-items:center;justify-content:center;transition:transform .25s cubic-bezier(.22,1,.36,1),background .2s;flex-shrink:0;">
+      <svg id="theme-icon-moon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#ede9e1;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg id="theme-icon-sun" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#1a1814;display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </span>
+  </button>
   <a class="nav-resume" href="Ayush_Narayanaswamy_Resume.pdf" download>↓ Resume</a>
+</div>
 </nav>
 
 <!-- hero -->
@@ -1151,6 +1185,30 @@ function copy_text(text){
     setTimeout(()=>t.classList.remove('show'),1800);
   });
 }
+/* ── Theme Toggle ── */
+(function(){
+  const btn=document.getElementById('theme-toggle');
+  const knob=document.getElementById('theme-knob');
+  const moon=document.getElementById('theme-icon-moon');
+  const sun=document.getElementById('theme-icon-sun');
+  let dark=true;
+  btn.addEventListener('click',function(){
+    dark=!dark;
+    if(dark){
+      document.documentElement.removeAttribute('data-theme');
+      knob.style.transform='translateX(0)';
+      knob.style.background='var(--dim)';
+      moon.style.display='block';
+      sun.style.display='none';
+    } else {
+      document.documentElement.setAttribute('data-theme','light');
+      knob.style.transform='translateX(26px)';
+      knob.style.background='#a09890';
+      moon.style.display='none';
+      sun.style.display='block';
+    }
+  });
+})();
 </script>
 </body>
 </html>
