@@ -421,6 +421,18 @@ a.contact-val:hover{color:var(--accent);}
   .hero-links{gap:1rem;}
   .kbd-hint{display:none;}
 }
+::view-transition-old(root),
+::view-transition-new(root){
+  animation:none;
+  mix-blend-mode:normal;
+}
+::view-transition-new(root){
+  animation:theme-wipe 500ms ease-in-out;
+}
+@keyframes theme-wipe{
+  from{clip-path:inset(0 50% 0 50%);}
+  to{clip-path:inset(0 0 0 0);}
+}
 @media(max-width:400px){
   .nav-name{display:none;}
   .nav-links li a{padding:.45rem .5rem;}
@@ -1316,8 +1328,8 @@ function copy_text(text){
   const sun=document.getElementById('theme-icon-sun');
   if(!btn)return;
   let dark=true;
-  btn.addEventListener('click',function(){
-    dark=!dark;
+
+  function applyTheme(){
     if(dark){
       document.documentElement.removeAttribute('data-theme');
       knob.style.transform='translateX(0)';
@@ -1333,7 +1345,23 @@ function copy_text(text){
       sun.style.display='block';
       window.update_three_theme&&window.update_three_theme(true);
     }
-  });
+  }
+
+  async function toggleTheme(){
+    dark=!dark;
+    if(!document.startViewTransition){
+      applyTheme();
+      return;
+    }
+    const transition=document.startViewTransition(()=>applyTheme());
+    await transition.ready;
+    document.documentElement.animate(
+      {clipPath:['inset(0 50% 0 50%)','inset(0 0 0 0)']},
+      {duration:500,easing:'ease-in-out',pseudoElement:'::view-transition-new(root)'}
+    );
+  }
+
+  btn.addEventListener('click',toggleTheme);
 })();
 </script>
 </body>
