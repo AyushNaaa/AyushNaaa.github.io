@@ -455,6 +455,58 @@ a.contact-val:hover{color:var(--accent);}
   </div>
 </nav>
 
+<!-- ══ TECH MARQUEE ══ -->
+<style>
+.tech-marquee-wrapper{position:fixed;top:52px;left:0;right:0;z-index:7;overflow:hidden;padding:10px 0;background:rgba(6,6,6,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.07);opacity:0;animation:fadein .6s ease 2.1s forwards;}
+.tech-marquee-track{display:flex;gap:14px;width:max-content;animation:marquee-scroll 35s linear infinite;}
+.tech-marquee-wrapper:hover .tech-marquee-track{animation-play-state:paused;}
+@keyframes marquee-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.tech-item{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.tech-icon{width:44px;height:44px;background:#1a1a1a;border-radius:12px;border:0.5px solid #2a2a2a;display:flex;align-items:center;justify-content:center;}
+.tech-icon img{width:24px;height:24px;object-fit:contain;}
+.tech-label{font-size:9px;color:#4a4742;white-space:nowrap;letter-spacing:.06em;font-family:'Geist Mono',monospace;}
+</style>
+
+<div class="tech-marquee-wrapper">
+  <div class="tech-marquee-track" id="marquee-track"></div>
+</div>
+
+<script>
+(function(){
+  const techs=[
+    {name:"Python",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"},
+    {name:"TypeScript",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"},
+    {name:"JavaScript",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"},
+    {name:"React",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"},
+    {name:"Next.js",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"},
+    {name:"Node.js",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"},
+    {name:"FastAPI",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg"},
+    {name:"Flutter",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg"},
+    {name:"Kotlin",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg"},
+    {name:"C++",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg"},
+    {name:"Python",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"},
+    {name:"Docker",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"},
+    {name:"NumPy",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg"},
+    {name:"pandas",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"},
+    {name:"Figma",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"},
+    {name:"GitHub",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"},
+    {name:"VS Code",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg"},
+    {name:"Supabase",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg"},
+    {name:"Jira",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg"},
+    {name:"Three.js",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg"},
+    {name:"Vercel",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg"},
+    {name:"MySQL",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"},
+  ];
+  const track=document.getElementById('marquee-track');
+  [...techs,...techs].forEach(t=>{
+    const el=document.createElement('div');
+    el.className='tech-item';
+    el.innerHTML=`<div class="tech-icon"><img src="${t.url}" alt="${t.name}"></div><span class="tech-label">${t.name}</span>`;
+    track.appendChild(el);
+  });
+})();
+</script>
+
 <!-- hero -->
 <main class="hero">
   <h1 class="hero-name">Ayush <em>Narayanaswamy</em></h1>
