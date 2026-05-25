@@ -1281,15 +1281,15 @@ document.addEventListener('keydown',e=>{
 /* ── Music Player ── */
 (function(){
   const TRACKS=[
-    {name:'Sorrows',artist:'Bryson Tiller'},
-    {name:'Junes Interlude',artist:'Nobu Woods'},
-    {name:'Feel No Ways',artist:'Drake'},
-    {name:'Cry for Me',artist:'The Weeknd'},
-    {name:'Crew',artist:'Brent Faiyaz'},
-    {name:'KAPITOL DENIM',artist:'LUCKI'},
-    {name:'PHASES',artist:'Chase Atlantic'},
-    {name:'Spiteful',artist:'PARTYNEXTDOOR'},
-    {name:'Lights Out',artist:'Chris Brown'}
+    {name:'Sorrows',artist:'Bryson Tiller',cover:'https://i.scdn.co/image/ab67616d0000b273b0386a6041f77eb09577789c'},
+    {name:'Junes Interlude',artist:'Nobu Woods',cover:'https://i.scdn.co/image/ab67616d0000b2736b4b8e3b8b8f1b8e3b8b8f1b'},
+    {name:'Feel No Ways',artist:'Drake',cover:'https://i.scdn.co/image/ab67616d0000b273c4f42b9daeda89f46adbe37e'},
+    {name:'Cry for Me',artist:'The Weeknd',cover:'https://i.scdn.co/image/ab67616d0000b273b0386a6041f77eb09577789c'},
+    {name:'Crew',artist:'Brent Faiyaz',cover:'https://i.scdn.co/image/ab67616d0000b273f7db43292a6a410a9e33c665'},
+    {name:'KAPITOL DENIM',artist:'LUCKI',cover:'https://i.scdn.co/image/ab67616d0000b2730b56e79700fa4f24ce63f8e2'},
+    {name:'PHASES',artist:'Chase Atlantic',cover:'https://i.scdn.co/image/ab67616d0000b273f3b1b1b1b1b1b1b1b1b1b1b1'},
+    {name:'Spiteful',artist:'PARTYNEXTDOOR',cover:'https://i.scdn.co/image/ab67616d0000b273b1b1b1b1b1b1b1b1b1b1b1b1'},
+    {name:'Lights Out',artist:'Chris Brown',cover:'https://i.scdn.co/image/ab67616d0000b273a1b1b1b1b1b1b1b1b1b1b1b1'},
   ];
   let idx=0,playing=false,progress=0,interval=null;
   function render(){
@@ -1304,6 +1304,9 @@ document.addEventListener('keydown',e=>{
     artistEl.textContent=t.artist;
     btnEl.innerHTML=playing?'&#9646;&#9646;':'&#9654;';
     vinylEl.className='vinyl'+(playing?' spinning':'');
+    vinylEl.style.backgroundImage=t.cover?`url(${t.cover})`:'';
+    vinylEl.style.backgroundSize='cover';
+    vinylEl.style.backgroundPosition='center';
     fillEl.style.width=progress+'%';
   }
   function tick(){
