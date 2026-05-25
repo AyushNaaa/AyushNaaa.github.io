@@ -455,20 +455,33 @@ a.contact-val:hover{color:var(--accent);}
   </div>
 </nav>
 
-<!-- ══ TECH MARQUEE ══ -->
+<!-- ══ TECH MARQUEE + BOTTOM BAR ══ -->
 <style>
 .tech-marquee-wrapper{position:fixed;top:52px;left:0;right:0;z-index:7;overflow:hidden;padding:10px 0;background:rgba(6,6,6,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.07);opacity:0;animation:fadein .6s ease 2.1s forwards;}
+[data-theme="light"] .tech-marquee-wrapper{background:rgba(245,242,238,0.92);border-bottom:1px solid rgba(0,0,0,0.08);}
 .tech-marquee-track{display:flex;gap:14px;width:max-content;animation:marquee-scroll 35s linear infinite;}
 .tech-marquee-wrapper:hover .tech-marquee-track{animation-play-state:paused;}
 @keyframes marquee-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 .tech-item{display:flex;flex-direction:column;align-items:center;gap:5px;}
 .tech-icon{width:44px;height:44px;background:#1a1a1a;border-radius:12px;border:0.5px solid #2a2a2a;display:flex;align-items:center;justify-content:center;}
+[data-theme="light"] .tech-icon{background:#e8e3dc;border-color:rgba(0,0,0,0.08);}
 .tech-icon img{width:24px;height:24px;object-fit:contain;}
 .tech-label{font-size:9px;color:#4a4742;white-space:nowrap;letter-spacing:.06em;font-family:'Geist Mono',monospace;}
+[data-theme="light"] .tech-label{color:#a09890;}
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;z-index:7;display:flex;align-items:center;justify-content:space-between;padding:0 1.8rem;height:36px;background:rgba(6,6,6,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.07);opacity:0;animation:fadein .6s ease 2.4s forwards;}
+[data-theme="light"] .bottom-bar{background:rgba(245,242,238,0.92);border-top:1px solid rgba(0,0,0,0.08);}
+.bottom-kbd{display:flex;align-items:center;font-size:.48rem;letter-spacing:.12em;color:var(--dim);}
+.bottom-kbd span{display:inline-block;border:1px solid var(--dim);padding:.1rem .32rem;border-radius:2px;font-size:.44rem;margin-right:2px;}
+.bottom-status{display:flex;align-items:center;gap:7px;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sub);}
 </style>
 
 <div class="tech-marquee-wrapper">
   <div class="tech-marquee-track" id="marquee-track"></div>
+</div>
+
+<div class="bottom-bar">
+  <div class="bottom-kbd"><span>1</span>About <span>2</span>Projects <span>3</span>Experience <span>4</span>Education <span>5</span>Stack</div>
+  <div class="bottom-status"><span class="pulse-dot"></span><span>Open to opportunities</span></div>
 </div>
 
 <script>
@@ -484,7 +497,6 @@ a.contact-val:hover{color:var(--accent);}
     {name:"Flutter",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg"},
     {name:"Kotlin",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg"},
     {name:"C++",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg"},
-    {name:"Python",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"},
     {name:"Docker",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"},
     {name:"NumPy",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg"},
     {name:"pandas",url:"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"},
@@ -506,7 +518,7 @@ a.contact-val:hover{color:var(--accent);}
   });
 })();
 </script>
-
+  
 <!-- hero -->
 <main class="hero">
   <h1 class="hero-name">Ayush <em>Narayanaswamy</em></h1>
